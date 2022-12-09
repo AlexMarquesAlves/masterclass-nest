@@ -1,12 +1,19 @@
 import { Controller, Get } from "@nestjs/common";
-import { AppService } from "./app.service";
+import { PrismaService } from "./database/prisma.service";
 
-@Controller()
+@Controller("app")
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private prisma: PrismaService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get("hello")
+  async getHello() {
+    const member = await this.prisma.rocketTeamMember.create({
+      data: {
+        id: "Capitao",
+        name: "Guilherme Capitao",
+        function: "Alcançar coisas no alto",
+      },
+    });
+    return { member };
   }
 }
